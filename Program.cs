@@ -22,4 +22,10 @@ namespace FileToImage
              */
         }
     }
+    
+    public enum Mode
+    {
+        Write,
+        Read
+    }
 }
