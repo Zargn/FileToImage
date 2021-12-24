@@ -5,8 +5,18 @@ namespace FileToImage
 {
     public class FileSelector
     {
+        private string filter;
+        
+        public FileSelector(string typeFilter)
+        {
+            filter = typeFilter;
+        }
+
         public void Run()
         {
+            string filePath = Directory.GetCurrentDirectory();
+            Console.WriteLine(filePath);
+            
             while (true)
             {
                 if (Console.KeyAvailable)
@@ -14,7 +24,7 @@ namespace FileToImage
                     switch (Console.ReadKey(true).Key)
                     {
                         case ConsoleKey.LeftArrow:
-                            MoveBackInDirectory();
+                            filePath = MoveBackInDirectory(filePath);
                             break;
                         case ConsoleKey.RightArrow:
                             EnterSelection();
@@ -32,17 +42,19 @@ namespace FileToImage
                             Console.WriteLine("Confirmed selection");
                             break;
                         default:
-                            Console.WriteLine("No valid imput");
+                            Console.WriteLine("No valid input");
                             break;
                     }
+
+                    Console.WriteLine(filePath);
                 }
             }
         }
         
-        void MoveBackInDirectory()
+        string MoveBackInDirectory(string filePath)
         {
-            Console.WriteLine("Moving back!");
-            // TODO: Move back in directory
+            string result = Path.GetDirectoryName(filePath);
+            return result ?? filePath;
         }
 
         void EnterSelection()
@@ -61,7 +73,7 @@ namespace FileToImage
         {
             Console.WriteLine("Went down the list");
             // TODO: Move down in file list
-        }
+        }   
     }
     
     
@@ -85,7 +97,7 @@ namespace FileToImage
              * Rest is handled by the classes themselves.
              */
 
-            FileSelector fileSelector = new FileSelector();
+            FileSelector fileSelector = new FileSelector(".png");
             fileSelector.Run();
         }
     }
