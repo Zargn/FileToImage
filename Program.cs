@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using System.Linq;
 
 namespace FileToImage
 {
     public class FileSelector
     {
         private string filter;
+        private string filePath;
+        private int selectedIndex;
         
         public FileSelector(string typeFilter)
         {
@@ -14,8 +19,15 @@ namespace FileToImage
 
         public void Run()
         {
-            string filePath = Directory.GetCurrentDirectory();
+            filePath = Directory.GetCurrentDirectory();
             Console.WriteLine(filePath);
+
+            List<string> filePaths = Directory.GetFileSystemEntries(Path.GetDirectoryName(filePath)).ToList();
+
+            foreach (var VARIABLE in filePaths)
+            {
+                Console.WriteLine(VARIABLE);
+            }
             
             while (true)
             {
@@ -24,13 +36,13 @@ namespace FileToImage
                     switch (Console.ReadKey(true).Key)
                     {
                         case ConsoleKey.LeftArrow:
-                            filePath = MoveBackInDirectory(filePath);
+                            filePaths = MoveBackInDirectory(filePaths);
                             break;
                         case ConsoleKey.RightArrow:
                             EnterSelection();
                             break;
                         case ConsoleKey.UpArrow:
-                            GoUpList();
+                            filePath = GoUpList(filePaths);
                             break;
                         case ConsoleKey.DownArrow:
                             GoDownList();
@@ -51,10 +63,37 @@ namespace FileToImage
             }
         }
         
-        string MoveBackInDirectory(string filePath)
+        List<string> MoveBackInDirectory(List<string> filePaths)
         {
-            string result = Path.GetDirectoryName(filePath);
-            return result ?? filePath;
+            string directoryPath = "";
+            string tempPath = filePaths[0];
+            for (int i = 0; i < 2; i++)
+            {
+                directoryPath = Path.GetDirectoryName(tempPath);
+                tempPath = directoryPath;
+                if (directoryPath == null)
+                    return filePaths;
+            }
+            
+            filePaths = Directory.GetFileSystemEntries(directoryPath).ToList();
+
+            for (int index = 0; index < filePaths.Count; index++)
+            {
+                Console.WriteLine($"list: {filePaths[index]} path: {Path.GetDirectoryName(filePath)}");
+                if (filePaths[index] == Path.GetDirectoryName(filePath))
+                {
+                    selectedIndex = index;
+                    filePath = filePaths[index];
+                    Console.WriteLine("Success!");
+                    break;
+                }
+
+                selectedIndex = 0;
+            } 
+            
+            
+            
+            return filePaths;
         }
 
         void EnterSelection()
@@ -63,9 +102,24 @@ namespace FileToImage
             // TODO: Select file/directory
         }
 
-        void GoUpList()
+        string GoUpList(List<string> filePaths)
         {
+            Console.WriteLine("------------------");
+            foreach (var VARIABLE in filePaths)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+            Console.WriteLine("------------------");
+            Console.WriteLine();
             Console.WriteLine("Went up the list");
+
+            selectedIndex++;
+            if (selectedIndex >= filePaths.Count)
+                selectedIndex = 0;
+
+            return filePaths[selectedIndex];
+            
+
             // TODO: Move up in file list
         }
 
