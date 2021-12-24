@@ -45,7 +45,7 @@ namespace FileToImage
                             filePath = GoUpList(filePaths);
                             break;
                         case ConsoleKey.DownArrow:
-                            GoDownList();
+                            filePath = GoDownList(filePaths);
                             break;
                         case ConsoleKey.Escape:
                             Console.WriteLine("EXITING");
@@ -113,9 +113,9 @@ namespace FileToImage
             Console.WriteLine();
             Console.WriteLine("Went up the list");
 
-            selectedIndex++;
-            if (selectedIndex >= filePaths.Count)
-                selectedIndex = 0;
+            selectedIndex--;
+            if (selectedIndex < 0)
+                selectedIndex = filePaths.Count - 1;
 
             return filePaths[selectedIndex];
             
@@ -123,8 +123,23 @@ namespace FileToImage
             // TODO: Move up in file list
         }
 
-        void GoDownList()
+        string GoDownList(List<string> filePaths)
         {
+            Console.WriteLine("------------------");
+            foreach (var VARIABLE in filePaths)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+            Console.WriteLine("------------------");
+            Console.WriteLine();
+            Console.WriteLine("Went up the list");
+
+            selectedIndex++;
+            if (selectedIndex >= filePaths.Count)
+                selectedIndex = 0;
+
+            return filePaths[selectedIndex];
+            
             Console.WriteLine("Went down the list");
             // TODO: Move down in file list
         }   
