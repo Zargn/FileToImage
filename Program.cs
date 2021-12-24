@@ -17,7 +17,7 @@ namespace FileToImage
             filter = typeFilter;
         }
 
-        public void Run()
+        public string GetFileFromUser()
         {
             filePath = Directory.GetCurrentDirectory();
             Console.WriteLine(filePath);
@@ -49,9 +49,12 @@ namespace FileToImage
                             break;
                         case ConsoleKey.Escape:
                             Console.WriteLine("EXITING");
-                            return;
+                            return filePath;
                         case ConsoleKey.Enter:
-                            Console.WriteLine("Confirmed selection");
+                            if (!PathIsDirectory(filePath))
+                                return filePath;
+                            else
+                                Console.WriteLine($"Selection can't proceed because {filePath} is a directory!");
                             break;
                         default:
                             Console.WriteLine("No valid input");
@@ -94,8 +97,7 @@ namespace FileToImage
 
         List<string> EnterSelection(List<string> filePaths)
         {
-            FileAttributes pathAttr = File.GetAttributes(filePaths[selectedIndex]);
-            if ((pathAttr & FileAttributes.Directory) == FileAttributes.Directory)
+            if (PathIsDirectory(filePaths[selectedIndex]))
             {
                 filePaths = Directory.GetFileSystemEntries(filePaths[selectedIndex]).ToList();
                 
@@ -104,6 +106,7 @@ namespace FileToImage
 
                 filePath = filePaths[selectedIndex];
             }
+            
             Console.WriteLine("Selected entry");
             return filePaths;
         }
@@ -128,7 +131,15 @@ namespace FileToImage
                 selectedIndex = 0;
 
             return filePaths[selectedIndex];
-        }   
+        }
+
+        bool PathIsDirectory(string path)
+        {
+            FileAttributes pathAttr = File.GetAttributes(path);
+            if ((pathAttr & FileAttributes.Directory) == FileAttributes.Directory)
+                return true;
+            return false;
+        }
     }
     
     
@@ -153,7 +164,9 @@ namespace FileToImage
              */
 
             FileSelector fileSelector = new FileSelector(".png");
-            fileSelector.Run();
+            string filePath = fileSelector.GetFileFromUser();
+
+            Console.WriteLine($"Selected file: {filePath}");
         }
     }
     
