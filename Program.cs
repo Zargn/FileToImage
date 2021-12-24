@@ -39,7 +39,7 @@ namespace FileToImage
                             filePaths = MoveBackInDirectory(filePaths);
                             break;
                         case ConsoleKey.RightArrow:
-                            EnterSelection();
+                            filePaths = EnterSelection(filePaths);
                             break;
                         case ConsoleKey.UpArrow:
                             filePath = GoUpList(filePaths);
@@ -87,30 +87,29 @@ namespace FileToImage
                     Console.WriteLine("Success!");
                     break;
                 }
-
                 selectedIndex = 0;
-            } 
-            
-            
-            
+            }
             return filePaths;
         }
 
-        void EnterSelection()
+        List<string> EnterSelection(List<string> filePaths)
         {
+            FileAttributes pathAttr = File.GetAttributes(filePaths[selectedIndex]);
+            if ((pathAttr & FileAttributes.Directory) == FileAttributes.Directory)
+            {
+                filePaths = Directory.GetFileSystemEntries(filePaths[selectedIndex]).ToList();
+                
+                // Since we do not know how many files are in the selected folder we need to set the index to 0.
+                selectedIndex = 0;
+
+                filePath = filePaths[selectedIndex];
+            }
             Console.WriteLine("Selected entry");
-            // TODO: Select file/directory
+            return filePaths;
         }
 
         string GoUpList(List<string> filePaths)
         {
-            Console.WriteLine("------------------");
-            foreach (var VARIABLE in filePaths)
-            {
-                Console.WriteLine(VARIABLE);
-            }
-            Console.WriteLine("------------------");
-            Console.WriteLine();
             Console.WriteLine("Went up the list");
 
             selectedIndex--;
@@ -118,30 +117,17 @@ namespace FileToImage
                 selectedIndex = filePaths.Count - 1;
 
             return filePaths[selectedIndex];
-            
-
-            // TODO: Move up in file list
         }
 
         string GoDownList(List<string> filePaths)
         {
-            Console.WriteLine("------------------");
-            foreach (var VARIABLE in filePaths)
-            {
-                Console.WriteLine(VARIABLE);
-            }
-            Console.WriteLine("------------------");
-            Console.WriteLine();
-            Console.WriteLine("Went up the list");
+            Console.WriteLine("Went down the list");
 
             selectedIndex++;
             if (selectedIndex >= filePaths.Count)
                 selectedIndex = 0;
 
             return filePaths[selectedIndex];
-            
-            Console.WriteLine("Went down the list");
-            // TODO: Move down in file list
         }   
     }
     
