@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+// TODO:
+// Make list view appear all the time.
+// Add Directory mode.
+// Make TAB also cycle the list.
+// Allow user to write path as well.
+
 namespace FileToImage.Core
 {
     public enum FilterMode
