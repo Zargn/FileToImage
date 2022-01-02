@@ -8,13 +8,13 @@ namespace FileToImage
 {
     public class FileSelector
     {
-        private string filter;
+        private string extensionFilter;
         private string filePath;
         private int selectedIndex;
         
-        public FileSelector(string typeFilter)
+        public FileSelector(string typeExtensionFilter)
         {
-            filter = typeFilter;
+            extensionFilter = typeExtensionFilter;
         }
 
         public string GetFileFromUser()
@@ -38,32 +38,55 @@ namespace FileToImage
                         case ConsoleKey.LeftArrow:
                             filePaths = MoveBackInDirectory(filePaths);
                             break;
+                        
                         case ConsoleKey.RightArrow:
                             filePaths = EnterSelection(filePaths);
                             break;
+                        
                         case ConsoleKey.UpArrow:
                             filePath = GoUpList(filePaths);
                             break;
+                        
                         case ConsoleKey.DownArrow:
                             filePath = GoDownList(filePaths);
                             break;
+                        
                         case ConsoleKey.Escape:
                             Console.WriteLine("EXITING");
-                            return filePath;
+                            return "";
+                        
                         case ConsoleKey.Enter:
                             if (!PathIsDirectory(filePath))
-                                return filePath;
+                            {
+                                if (PathIsValidSelection(filePath))
+                                {
+                                    return filePath;
+                                }
+                            }
                             else
                                 Console.WriteLine($"Selection can't proceed because {filePath} is a directory!");
                             break;
+                        
                         default:
                             Console.WriteLine("No valid input");
                             break;
                     }
 
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine(filePath);
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
             }
+        }
+
+        bool PathIsValidSelection(string filePath)
+        {
+            if (Path.GetExtension(filePath) == extensionFilter)
+            {
+                return true;
+            }
+            Console.WriteLine($"Selection does not match the file extension: [{extensionFilter}]!");
+            return false;
         }
         
         List<string> MoveBackInDirectory(List<string> filePaths)
@@ -133,6 +156,12 @@ namespace FileToImage
             return filePaths[selectedIndex];
         }
 
+        
+        /// <summary>
+        /// Returns if selected path is a directory or not.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         bool PathIsDirectory(string path)
         {
             FileAttributes pathAttr = File.GetAttributes(path);
