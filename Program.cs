@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FileToImage.Core;
-using FileToImage.Threading;
 
 namespace FileToImage
 {
@@ -64,6 +63,7 @@ namespace FileToImage
                             CycleMode();
                             break;
                         case ConsoleKey.Enter:
+                            Console.Clear();
                             Console.WriteLine($"{mode} selected!");
                             return;
                     }
