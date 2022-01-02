@@ -5,16 +5,28 @@ using System.Linq;
 
 namespace FileToImage.Core
 {
+    public enum FilterMode
+    {
+        Everything,
+        Extension
+    }
+    
     public class FileSelector
     {
-        private string extensionFilter;
+        private readonly string extensionFilter;
+        private FilterMode filterMode;
         private string filePath;
         private int selectedIndex;
         
-        public FileSelector(string typeExtensionFilter)
+        
+        
+        public FileSelector(string typeExtensionFilter, FilterMode filterMode)
         {
+            this.filterMode = filterMode;
             extensionFilter = typeExtensionFilter;
         }
+
+
 
         public string GetFileFromUser()
         {
@@ -81,19 +93,29 @@ namespace FileToImage.Core
         
         
 
-        bool PathIsValidSelection(string filePath)
+        private bool PathIsValidSelection(string filePath)
         {
-            if (Path.GetExtension(filePath) == extensionFilter)
+            if (filterMode == FilterMode.Everything)
             {
                 return true;
             }
-            Console.WriteLine($"Selection does not match the file extension: [{extensionFilter}]!");
+            
+            if (filterMode == FilterMode.Extension)
+            {
+                if (Path.GetExtension(filePath) == extensionFilter)
+                {
+                    return true;
+                }
+                Console.WriteLine($"Selection does not match the file extension: [{extensionFilter}]!");
+                return false;
+            }
+
             return false;
         }
         
         
         
-        List<string> MoveBackInDirectory(List<string> filePaths)
+        private List<string> MoveBackInDirectory(List<string> filePaths)
         {
             string directoryPath = "";
             string tempPath = filePaths[0];
@@ -129,7 +151,7 @@ namespace FileToImage.Core
         /// </summary>
         /// <param name="filePaths"></param>
         /// <returns></returns>
-        List<string> EnterSelection(List<string> filePaths)
+        private List<string> EnterSelection(List<string> filePaths)
         {
             if (PathIsDirectory(filePaths[selectedIndex]))
             {
@@ -147,7 +169,7 @@ namespace FileToImage.Core
 
         
         
-        string GoUpList(List<string> filePaths)
+        private string GoUpList(List<string> filePaths)
         {
             Console.WriteLine("Went up the list");
 
@@ -160,7 +182,7 @@ namespace FileToImage.Core
 
         
         
-        string GoDownList(List<string> filePaths)
+        private string GoDownList(List<string> filePaths)
         {
             Console.WriteLine("Went down the list");
 
@@ -178,7 +200,7 @@ namespace FileToImage.Core
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        bool PathIsDirectory(string path)
+        private bool PathIsDirectory(string path)
         {
             FileAttributes pathAttr = File.GetAttributes(path);
             if ((pathAttr & FileAttributes.Directory) == FileAttributes.Directory)
