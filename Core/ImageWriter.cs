@@ -1,4 +1,7 @@
-﻿namespace FileToImage.Core
+﻿using System;
+using System.Net.Mime;
+
+namespace FileToImage.Core
 {
     public class ImageWriter
     {
@@ -10,6 +13,18 @@
             // Start the workers and wait for them all to complete and return their data.
             // Compile the final data into one image.
             // Ask the user to select a directory to save the file. (File name will be a random string. The name for the origin file will be encoded with the data.)
+
+            const string fileExtensionTarget = "";
+
+            Console.WriteLine("Please select a file!");
+            
+            FileSelector fileSelector = new FileSelector(fileExtensionTarget, FilterMode.Everything);
+            string pathToImage = fileSelector.GetFileFromUser();
+            if (pathToImage == "")
+                return;
+
+            Console.WriteLine("Selected file:");
+            Console.WriteLine(pathToImage);
         }
     }
 }
