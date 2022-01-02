@@ -41,11 +41,11 @@ namespace FileToImage
 
             if (mode == Mode.Read)
             {
-                ReadWorker readWorker = new ReadWorker();
+                ImageReader imageReader = new ImageReader();
             }
             else if (mode == Mode.Write)
             {
-                WriteWorker writeWorker = new WriteWorker();
+                ImageWriter imageWriter = new ImageWriter();
             }
         }
 
