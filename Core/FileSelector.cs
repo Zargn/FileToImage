@@ -32,6 +32,7 @@ namespace FileToImage.Core
             {
                 if (Console.KeyAvailable)
                 {
+                    Console.Clear();
                     switch (Console.ReadKey(true).Key)
                     {
                         case ConsoleKey.LeftArrow:
