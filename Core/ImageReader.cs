@@ -1,4 +1,5 @@
 ﻿using System;
+using static FileToImage.Ui.ColorConsoleWrite;
 
 namespace FileToImage.Core
 {
@@ -12,7 +13,7 @@ namespace FileToImage.Core
             // Start the workers and wait for them all to complete and return their data.
             // Compile the final data into one file.
             // Ask the user to select a directory to save the file.
-            Console.WriteLine("Not yet implemented!");
+            ColorWriteLine("Not Implemented!", ConsoleColor.Magenta);
         }
     }
 }
