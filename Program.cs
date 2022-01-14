@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using FileToImage.Core;
+using static FileToImage.Ui.ColorConsoleWrite;
 
 namespace FileToImage
 {
@@ -79,16 +80,12 @@ namespace FileToImage
             if (mode == Mode.Read)
             {
                 mode = Mode.Write;
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(mode);
-                Console.ForegroundColor = ConsoleColor.White;
+                ColorWrite(mode.ToString(), ConsoleColor.Green);
             }
             else
             {
                 mode = Mode.Read;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write(mode);
-                Console.ForegroundColor = ConsoleColor.White;
+                ColorWrite(mode.ToString(), ConsoleColor.Red);
             }
         }
     }

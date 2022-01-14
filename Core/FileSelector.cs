@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using static FileToImage.Ui.ColorConsoleWrite;
 
 // TODO:
 // Make list view appear all the time.
@@ -90,9 +91,7 @@ namespace FileToImage.Core
                             break;
                     }
 
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine(filePath);
-                    Console.ForegroundColor = ConsoleColor.White;
+                    ColorWriteLine(filePath, ConsoleColor.Blue);
                 }
             }
         }
