@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Net.Mime;
+using FileToImage.Ui;
 
 namespace FileToImage.Core
 {
@@ -19,12 +21,27 @@ namespace FileToImage.Core
             Console.WriteLine("Please select a file!");
             
             FileSelector fileSelector = new FileSelector(fileExtensionTarget, FilterMode.Everything);
-            string pathToImage = fileSelector.GetFileFromUser();
-            if (pathToImage == "")
+            string pathToFile = fileSelector.GetFileFromUser();
+            if (pathToFile == "")
                 return;
 
             Console.WriteLine("Selected file:");
-            Console.WriteLine(pathToImage);
+            Console.WriteLine(pathToFile);
+
+            byte[] fileBytes = File.ReadAllBytes(pathToFile);
+            
+            Console.WriteLine(fileBytes.Length);
+            
+            // TODO:
+            // Set up a method that returns a chunk of data from the file, and the index of that chunk.
+            // Set up a method that takes a chunk of processed data from workers and puts it in the correct part of the image
+            // based on the index of the preprocessed chunk.
+            
+            // Get the amount of cpu's available.
+            // Start that amount of workers.
+            // The workers requests a chunk if they have nothing to do. If the request returns null then the work is done, and the worker
+            // will self destruct.
+            // 
         }
     }
 }
