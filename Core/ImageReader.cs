@@ -1,4 +1,6 @@
-﻿namespace FileToImage.Core
+﻿using System;
+
+namespace FileToImage.Core
 {
     public class ImageReader
     {
@@ -10,7 +12,7 @@
             // Start the workers and wait for them all to complete and return their data.
             // Compile the final data into one file.
             // Ask the user to select a directory to save the file.
-            
+            Console.WriteLine("Not yet implemented!");
         }
     }
 }
