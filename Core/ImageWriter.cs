@@ -42,6 +42,10 @@ namespace FileToImage.Core
             // The workers requests a chunk if they have nothing to do. If the request returns null then the work is done, and the worker
             // will self destruct.
             // 
+            // Research stream.
+            // https://docs.microsoft.com/en-us/dotnet/api/system.io.stream?view=net-6.0
+            // https://docs.microsoft.com/en-us/dotnet/api/system.io.streamwriter?view=net-6.0
+            // https://docs.microsoft.com/en-us/dotnet/api/system.io.streamreader?view=net-6.0
         }
     }
 }
